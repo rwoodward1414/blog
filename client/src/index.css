@@ -1,13 +1,29 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'cascadia_code';
+  src: url('fonts\\CascadiaCode.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: 'cascadia_code';
+  margin-left: 20vw;
+  margin-right: 17vw;
+  margin-bottom: 0px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bloglist {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+.postbox {
+  width: 75%;
+  margin: auto;
+  word-wrap: break-word;
 }
