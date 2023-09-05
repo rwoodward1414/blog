@@ -1,48 +1,60 @@
 const express = require("express");
 const mongoose = require('mongoose');
 require('dotenv').config();
-const Post = require("./model.js")
+const Post = require("./model.js");
 
 const app = express();
 app.use(express.json());
 
-app.get("/", function (req, res) {
-    res.send("Hello World!");
-  });
-  
-  app.get("/posts", async(req, res) => {
-      try {
-          const posts = await Post.find({});
-          res.status(200).json(posts);
-      } catch (error) {
-          res.status(500).json({message: error.message});
-      }
-  });
-  
-  app.post("/post", async(req, res) => {
-      const post = await Post.create(req.body);
-      res.status(200).json({});
-  });
-  
-  app.delete('/post/:id', async(req, res) => {
-      try {
-          const {id} = req.params;
-          const post = await Post.findByIdAndDelete(id);
-          res.status(200);
-      } catch (error) {
-          res.status(500).json({message: error.message});
-      }
-  });
-
-  app.get('/post/:id', async(req, res) => {
+// Gets all blog posts
+app.get("/posts", async(req, res) => {
     try {
-      const {id} = req.params;
-      const post = await Post.findById(id);
-      res.status(200).json(post);
+        const posts = await Post.find({});
+        res.status(200).json(posts);
     } catch (error) {
-      res.status(500).json({message: error.message});
+        res.status(500).json({message: error.message});
     }
-  });
+});
+
+// Creates a new blog post
+app.post("/post", async(req, res) => {
+  const post = await Post.create(req.body);
+  res.status(200).json({});
+});
+  
+// Deletes a blog post using it's ID
+app.delete('/post/:id', async(req, res) => {
+  try {
+    const {id} = req.params;
+    const post = await Post.findByIdAndDelete(id);
+    res.status(200);
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
+});
+
+  // Gets a post using it's ID
+app.get('/post/:id', async(req, res) => {
+  try {
+    const {id} = req.params;
+    const post = await Post.findById(id);
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
+});
+
+// Gets all posts that have specifed tag
+app.get('/posts/:tag', async(req, res) => {
+  try {
+    const {tag} = req.params;
+    const posts = await Post.find({ tags: tag });
+    console.log(posts);
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
+});
   
 
 const PORT = process.env.PORT || 3001;
