@@ -16,14 +16,22 @@ body {
   flex-direction: column;
 }
 
-.bloglist {
+.container {
   display: flex;
-  flex-direction: column;
-  width: 70%;
+  flex: 1;
+}
+
+.bloglist {
+  flex: 1;
+  width: 50%;
 }
 
 .postbox {
-  width: 75%;
   margin: auto;
   word-wrap: break-word;
+}
+
+aside {
+  width: auto;
+  float: right;
 }
