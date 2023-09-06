@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { truncateText, timeCreated } from './functions';
 
 function FrontPage() {
-  const[posts, setPosts] = useState([]);
+  let[posts, setPosts] = useState([]);
   const navigate = useNavigate();
   let tags = [];
 
@@ -19,13 +20,10 @@ function FrontPage() {
     fetchPosts()
   }, []);
 
-  // Cuts off text at max length and add ellipsis at end
-  const truncateText = (text, maxLength) => {
-    if (text.length <= maxLength) {
-      return text;
-    }
-    return text.slice(0, maxLength) + '...';
-  };
+  // Sorts posts by when they were created
+  posts = posts.sort(function(a, b){
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
 
   // Adds tags to tags array
   posts.forEach((post) => {
@@ -50,6 +48,7 @@ function FrontPage() {
           {posts.map((post) => (
             <div className='postbox'>
               <h2>{post.title}</h2>
+              <p>{timeCreated(post.createdAt)}</p>
               <p>{truncateText(post.text, 150)}</p>
               <Link to={`/post/${post._id}`}>Read More</Link>
             </div>
