@@ -2,28 +2,62 @@ const express = require("express");
 const mongoose = require('mongoose');
 require('dotenv').config();
 const Post = require("./model.js");
+const User = require("./account.js");
+const { createUser, logIn, verifyToken } = require('./auth.js');
 
 const app = express();
 app.use(express.json());
 
+app.post('/user/createAccount', async(req, res) => {
+  try {
+    const { username, password } = req.body;
+    token = createUser(username, password);
+    res.status(200).json(token);
+  } catch (error) {
+    res.status(400).json({message: error.message});
+  }
+});
+
+app.post('user/login', async(req, res) => {
+  try {
+    const { username, password } = req.body;
+    token = logIn(username, password);
+    res.status(200).json(token);
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
+});
+
 // Gets all blog posts
 app.get("/posts", async(req, res) => {
-    try {
-        const posts = await Post.find({});
-        res.status(200).json(posts);
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
+  try {
+    const posts = await Post.find({});
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
 });
 
 // Creates a new blog post
 app.post("/post", async(req, res) => {
+  const token = req.headers.token;
+  if (! token){
+    res.status(403).send("Token is required");
+  } else if (! verifyToken) {
+    res.status(401).send("Token invalid");
+  }
   const post = await Post.create(req.body);
   res.status(200).json({});
 });
   
 // Deletes a blog post using it's ID
 app.delete('/post/:id', async(req, res) => {
+  const token = req.headers.token;
+  if (! token){
+    res.status(403).send("Token is required");
+  } else if (! verifyToken) {
+    res.status(401).send("Token invalid");
+  }
   try {
     const {id} = req.params;
     const post = await Post.findByIdAndDelete(id);
