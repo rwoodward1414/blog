@@ -1,33 +1,19 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import FrontPage from './FrontPage'
+import SinglePost from './SinglePost';
+import TaggedPosts from './TaggedPosts';
 
 function App() {
 
-  const[posts, setPosts] = useState([]);
-
-  const fetchPosts = () => {
-    fetch("/posts")
-    .then(res => res.json())
-    .then(data => {
-      setPosts(data)
-    });
-  }
-
-  useEffect(() => {
-    fetchPosts()
-  }, []);
-
   return (
-    <div>
-      <h1>Blog Posts</h1>
-      <div className='bloglist'>
-        {posts.map((post) => (
-          <div className='postbox'>
-            <h2>{post.title}</h2>
-            <p>{post.text}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<FrontPage />}></Route>
+        <Route path="/post/:id" element={<SinglePost />}></Route>
+        <Route path="/posts/:tag" element={<TaggedPosts />}></Route>
+      </Routes>
+    </Router>
   );
 }
 
