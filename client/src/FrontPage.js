@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function PostList() {
-
+function FrontPage() {
   const[posts, setPosts] = useState([]);
   const navigate = useNavigate();
+  let tags = [];
 
+  // Grabs all posts
   const fetchPosts = () => {
     fetch("/posts")
     .then(res => res.json())
@@ -18,6 +19,7 @@ function PostList() {
     fetchPosts()
   }, []);
 
+  // Cuts off text at max length and add ellipsis at end
   const truncateText = (text, maxLength) => {
     if (text.length <= maxLength) {
       return text;
@@ -25,8 +27,7 @@ function PostList() {
     return text.slice(0, maxLength) + '...';
   };
 
-  let tags = [];
-
+  // Adds tags to tags array
   posts.forEach((post) => {
     post.tags.forEach((tag) => {
       if (!tags.includes(tag)){
@@ -35,6 +36,8 @@ function PostList() {
     });
   });
 
+  // When tag buttons are clicked,
+  // navigate to page that lists post with that tag
   const handleClick = (tag) => {
     navigate('/posts/' + tag);
   }
@@ -64,4 +67,4 @@ function PostList() {
   );
 }
 
-export default PostList;
+export default FrontPage;

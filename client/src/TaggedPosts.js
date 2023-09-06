@@ -2,12 +2,10 @@ import React, {useEffect, useState} from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 function TaggedPosts() {
-
   const {tag} = useParams();
   const[posts, setPosts] = useState([]);
 
-  console.log(tag);
-
+  // Grabs all posts with specifed tag
   useEffect(() => {
     fetch('/posts/' + tag)
     .then(res => res.json())
@@ -16,6 +14,7 @@ function TaggedPosts() {
     });
   }, [tag]);
 
+  // Cuts off text at max length and add ellipsis at end
   const truncateText = (text, maxLength) => {
     if (text.length <= maxLength) {
       return text;

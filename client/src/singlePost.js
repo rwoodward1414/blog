@@ -5,6 +5,7 @@ function SinglePost() {
     const {id} = useParams();
     const[post, setPost] = useState([]);
 
+    // Grabs post with specifed ID
     const fetchPost = () => {
       fetch('/post/' + id)
       .then(res => res.json())
